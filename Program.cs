@@ -23,7 +23,8 @@ internal class Program
             // ExecuteProcedure(connection);
             // ExecuteReadProcedureGetCoursesByCategory(connection, "09ce0b7b-cfca-497b-92c0-3290ad9d5142");
             // ExecuteScalar(connection);
-            ReadViewCourses(connection);
+            // ReadViewCourses(connection);
+            OneToOne(connection);
         }
     }
 
@@ -254,6 +255,32 @@ internal class Program
         foreach(var item in courses)
         {
             System.Console.WriteLine($"{item.Id} - {item.Title}");
+        }
+    }
+
+    static void OneToOne(SqlConnection connection)
+    {
+        var sql = @"
+        SELECT
+            *
+        FROM
+            [CareerItem]
+        INNER JOIN
+            [Course]
+            ON
+                [CareerItem].[CourseId] = [Course].[Id]";
+
+        var items = connection.Query<CareerItem, Course, CareerItem>(
+            sql,
+            (careerItem, course) => {
+                careerItem.Course = course;
+                return careerItem;
+            },
+            splitOn: "Id");
+
+        foreach(var item in items)
+        {
+            System.Console.WriteLine($"{item.Title} - Curso: {item.Course.Title}");
         }
     }
 }
