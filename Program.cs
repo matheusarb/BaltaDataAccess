@@ -24,7 +24,8 @@ internal class Program
             // ExecuteReadProcedureGetCoursesByCategory(connection, "09ce0b7b-cfca-497b-92c0-3290ad9d5142");
             // ExecuteScalar(connection);
             // ReadViewCourses(connection);
-            OneToOne(connection);
+            // OneToOne(connection);
+            OneToMany(connection);
         }
     }
 
@@ -260,6 +261,9 @@ internal class Program
 
     static void OneToOne(SqlConnection connection)
     {
+        //1. comando sql
+        //2. variável pra armazenar retorno da consulta ao banco
+        //3. Console.WriteLine para display
         var sql = @"
         SELECT
             *
@@ -286,6 +290,47 @@ internal class Program
 
     static void OneToMany(SqlConnection connection)
     {
+        var sql = @"
+            SELECT
+                [Career].[Id],
+                [Career].[Title],
+                [CareerItem].[CareerId],
+                [CareerItem].[Title]
+            FROM
+                [Career]
+            INNER JOIN
+                [CareerItem] ON [CareerItem].[CareerId] = [Career].[Id]
+            ORDER BY
+                [Career].[Title]";
+
+        var listCareers = new List<Career>();
+
+        //Query<objetoPai, objetoFilho, resultadFinal=objetoPai>
+        var items = connection.Query<Career, CareerItem, Career>(
+            sql,
+            (career, careerItem) => {
+                var carreira = listCareers.Where(x=>x.Id == career.Id).FirstOrDefault();
+                if(carreira == null)
+                {
+                    carreira = career;
+                    carreira.Items.Add(careerItem);
+                    listCareers.Add(carreira);
+                }
+                else
+                {
+                    
+                }
+                return career;
+            },
+            splitOn: "CareerId");
         
+        foreach(var career in items)
+        {
+            System.Console.WriteLine(career.Title);
+            foreach(var item in career.Items)
+            {
+                System.Console.WriteLine($" - {item.Title}");
+            }
+        }
     }
 }
