@@ -13,7 +13,7 @@ internal class Program
         using(var connection = new SqlConnection(connectionString))
         {
             // UpdateCategoryTitle(connection);
-            // DeleteCategory(connection, "9b06ecf8-a8f9-4196-9e3b-fb8fc872b06f");
+            // DeleteCategory(connection, "69c13845-4bd0-4fb1-a4f2-ff2998e248c8");
             // CreateManyCategories(connection);
             // DeleteManyCategories(connection);
             
@@ -22,7 +22,8 @@ internal class Program
             // ListCategories(connection);
             // ExecuteProcedure(connection);
             // ExecuteReadProcedureGetCoursesByCategory(connection, "09ce0b7b-cfca-497b-92c0-3290ad9d5142");
-            ExecuteScalar()
+            // ExecuteScalar(connection);
+            ReadViewCourses(connection);
         }
     }
 
@@ -212,8 +213,8 @@ internal class Program
     {
         var category = new Category();
         category.Title = "novaCategory";
-        category.Title = "novaCategory";
-        category.Title = "novaCategory";
+        category.Url = "novaCategory";
+        category.Summary = "novaCategory";
         category.Order = 12;
         category.Description = "novaCat";
         category.Featured = false;
@@ -221,6 +222,7 @@ internal class Program
         var insertSqlCategory = @"
             INSERT INTO
                 [Category]
+            OUTPUT inserted.[Id]
             VALUES (
                 NEWID(),
                 @Title,
@@ -229,7 +231,7 @@ internal class Program
                 @Order,
                 @Description,
                 @Featured)
-            SELECT SCOPE_IDENTITY";
+            SELECT SCOPE_IDENTITY()";
 
         var categoryId = connection.ExecuteScalar<Guid>(insertSqlCategory, new Category
         {
@@ -242,5 +244,16 @@ internal class Program
         });
 
         System.Console.WriteLine($"A categoria inserida foi {categoryId}");
+    }
+
+    static void ReadViewCourses(SqlConnection connection)
+    {
+        var sqlQuery = "SELECT * FROM [vwCourses]";
+        var courses = connection.Query(sqlQuery);
+
+        foreach(var item in courses)
+        {
+            System.Console.WriteLine($"{item.Id} - {item.Title}");
+        }
     }
 }
