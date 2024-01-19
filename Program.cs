@@ -283,4 +283,9 @@ internal class Program
             System.Console.WriteLine($"{item.Title} - Curso: {item.Course.Title}");
         }
     }
+
+    static void OneToMany(SqlConnection connection)
+    {
+        
+    }
 }
