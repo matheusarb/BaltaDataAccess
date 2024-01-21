@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "fcQKQjKDO8Zl/rOfpDcNBxigRZ+OGIOT9g4MUags69Hw4VHmbTgT0na0qq26h7pQU7OQYx6yk25PJCx3WUrjAQ==",
+  "dgSpecHash": "+0QPPcDDbfvQND+g2r0fS/ULuvMSohXoO5fD0NPSpn125Rg+KWoi2qTC6G0MrW0jWV4MeINT/mgw5dEtH9sqVg==",
   "success": true,
-  "projectFilePath": "c:\\dev\\BaltaDataAccess\\baltadataaccess.csproj",
+  "projectFilePath": "C:\\dev\\baltadataaccess\\baltadataaccess.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\User\\.nuget\\packages\\dapper\\2.0.90\\dapper.2.0.90.nupkg.sha512",
     "C:\\Users\\User\\.nuget\\packages\\microsoft.csharp\\4.5.0\\microsoft.csharp.4.5.0.nupkg.sha512",

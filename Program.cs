@@ -25,7 +25,8 @@ internal class Program
             // ExecuteScalar(connection);
             // ReadViewCourses(connection);
             // OneToOne(connection);
-            OneToMany(connection);
+            // OneToMany(connection);
+            SelectIn(connection);
         }
     }
 
@@ -353,5 +354,24 @@ internal class Program
                 System.Console.WriteLine(item);
             }
         }
+    }
+
+    static void SelectIn(SqlConnection connection)
+    {
+        var sql = @"SELECT * FROM [Career] WHERE [Id] IN (
+            '01ae8a85-b4e8-4194-a0f1-1c6190af54cb',
+            'e6730d1c-6870-4df3-ae68-438624e04c72'
+        )";
+
+        var queryResult = connection.Query<Career>(sql);
+        foreach(var item in queryResult)
+        {
+            System.Console.WriteLine($"{item.Id} - {item.Title}");
+        }
+    }
+
+    static void Like(SqlConnection connection)
+    {
+        
     }
 }
