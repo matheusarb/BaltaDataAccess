@@ -13,7 +13,7 @@ internal class Program
         using(var connection = new SqlConnection(connectionString))
         {
             // UpdateCategoryTitle(connection);
-            // DeleteCategory(connection, "b94816dc-54b3-4195-8936-becacf08d959");
+            // DeleteCategory(connection, "aad38baa-9e37-4374-887d-7b8ff6f00e59");
             // CreateManyCategories(connection);
             // DeleteManyCategories(connection);
             
@@ -419,7 +419,7 @@ internal class Program
                 newCategory,
                 transaction);
 
-            
+
             transaction.Commit();
             // transaction.Rollback();
             System.Console.WriteLine($"{affectedRows} linhas afetadas");
