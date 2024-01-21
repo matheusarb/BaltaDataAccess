@@ -13,7 +13,7 @@ internal class Program
         using(var connection = new SqlConnection(connectionString))
         {
             // UpdateCategoryTitle(connection);
-            // DeleteCategory(connection, "69c13845-4bd0-4fb1-a4f2-ff2998e248c8");
+            // DeleteCategory(connection, "b94816dc-54b3-4195-8936-becacf08d959");
             // CreateManyCategories(connection);
             // DeleteManyCategories(connection);
             
@@ -27,7 +27,8 @@ internal class Program
             // OneToOne(connection);
             // OneToMany(connection);
             // SelectIn(connection);
-            Like(connection);
+            // Like(connection);
+            // Transaction(connection);
         }
     }
 
@@ -384,5 +385,44 @@ internal class Program
         {
             System.Console.WriteLine(item.Title);
         }
+    }
+
+    static void Transaction(SqlConnection connection)
+    {
+        var newCategory = new Category();
+        newCategory.Id = Guid.NewGuid();
+        newCategory.Title = "Cat nao quero inserir";
+        newCategory.Url = "Url";
+        newCategory.Summary = "Summary";
+        newCategory.Order = 15;
+        newCategory.Description = "Desc";
+        newCategory.Featured = false;
+
+        var insertSqlCategory = @"INSERT INTO
+                [Category]
+            VALUES (
+                @Id,
+                @Title,
+                @Url,
+                @Summary,
+                @Order,
+                @Description,
+                @Featured
+                )
+            ";
+
+        connection.Open();
+        using(var transaction = connection.BeginTransaction())
+        {
+            var affectedRows = connection.Execute(
+                insertSqlCategory,
+                newCategory,
+                transaction);
+
+            
+            transaction.Commit();
+            // transaction.Rollback();
+            System.Console.WriteLine($"{affectedRows} linhas afetadas");
+        };
     }
 }
