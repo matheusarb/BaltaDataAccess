@@ -26,7 +26,8 @@ internal class Program
             // ReadViewCourses(connection);
             // OneToOne(connection);
             // OneToMany(connection);
-            SelectIn(connection);
+            // SelectIn(connection);
+            Like(connection);
         }
     }
 
@@ -372,6 +373,16 @@ internal class Program
 
     static void Like(SqlConnection connection)
     {
-        
+        var term = "backend";
+        var query = @"SELECT * FROM [Course] WHERE [Title] LIKE @exp";
+
+        var queryResult = connection.Query<Course>(query, new {
+            exp = $"%{term}%"
+        });
+
+        foreach(var item in queryResult)
+        {
+            System.Console.WriteLine(item.Title);
+        }
     }
 }
