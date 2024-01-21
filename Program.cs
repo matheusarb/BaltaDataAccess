@@ -318,7 +318,7 @@ internal class Program
                 }
                 else
                 {
-                    
+
                 }
                 return career;
             },
@@ -330,6 +330,27 @@ internal class Program
             foreach(var item in career.Items)
             {
                 System.Console.WriteLine($" - {item.Title}");
+            }
+        }
+    }
+
+    static void QueryMultiple(SqlConnection connection)
+    {
+        var query = @"SELECT * FROM [Category]; SELECT * FROM [Course]";
+
+        using(var multi = connection.QueryMultiple(query))
+        {
+            var categories = multi.Read<Category>();
+            var courses = multi.Read<Course>();
+
+            foreach(var item in categories)
+            {
+                System.Console.WriteLine(item);
+            }
+
+            foreach(var item in courses)
+            {
+                System.Console.WriteLine(item);
             }
         }
     }
